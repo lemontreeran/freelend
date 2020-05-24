@@ -13,4 +13,16 @@ contract LendingManager {
 		groups[group_number] = new_group;
 	}
 
+  function getGroupNum() public
+    returns (int)
+  {
+    return group_number;
+  }
+
+  function getGroup(int id) public
+    returns (address)
+  {
+    return groups[id];
+  }
+
 }
