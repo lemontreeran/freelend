@@ -1,0 +1,25 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+Contracts/build
+
+# dependencies
+freelend/node_modules
+freelend/.pnp
+freelend/.pnp.js
+
+# testing
+freelend/coverage
+
+# production
+freelend/build
+
+# misc
+freelend/.DS_Store
+freelend/.env.local
+freelend/.env.development.local
+freelend/.env.test.local
+freelend/.env.production.local
+
+freelend/npm-debug.log*
+freelend/yarn-debug.log*
+freelend/yarn-error.log*
