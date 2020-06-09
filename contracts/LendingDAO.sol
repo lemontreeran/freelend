@@ -1,4 +1,4 @@
-pragma solidity >=0.4.21 <0.6.1;
+pragma solidity >=0.5.0 <0.6.1;
 
 contract LendingDAO{
   struct Request {
@@ -13,7 +13,7 @@ contract LendingDAO{
 
   string name;
   address owner;
-  address[] member_address;
+  address[] memberAddress;
   mapping (address => Member) members;
   mapping (address => Request) requests;
 
@@ -26,16 +26,11 @@ contract LendingDAO{
     owner = _owner;
   }
 
-  function addMember (address member) public {
-    members.add(member);
-    balances[member] = 0;
-    requests[member] = Request(0, 0);
-  }
-  function addMember (address _member_address, string memory name) public {
-    member_address.push(_member_address);
-    members[__member_address] = Member(name,0);
-    balances[__member_address] = 0;
-    requests[__member_address] = Request(0, 0);
+  function addMember (address _memberAddress, string memory _name,
+                      string memory phoneNumber, string memory physAddress) public {
+    memberAddress.push(_memberAddress);
+    members[_memberAddress] = Member(_name, 0);
+    requests[_memberAddress] = Request(0, 0);
   }
 
   function requestMoney (uint amount) public {
@@ -45,11 +40,16 @@ contract LendingDAO{
   }
 
   function giveMoney (address member) public payable {
+    address payable memberPayable = address (uint160(member));
     if ((requests[member].total_fulfilled + msg.value) >= requests[member].requested) {
-      payOut(...);
+      payOut(memberPayable);
     }
 
     requests[member].total_fulfilled += msg.value;
-    members[msg.sender].balance += msg.value;
+    members[msg.sender].balance += int256(msg.value);
+  }
+
+  function payOut (address payable member) private {
+    member.transfer((requests[member].requested) / 1000);
   }
 }

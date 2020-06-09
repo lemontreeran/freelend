@@ -1,26 +1,26 @@
-pragma solidity >=0.4.21 <0.6.1;
+pragma solidity >=0.5.0 <0.6.1;
 
-import './LendingContract.sol';
+import './LendingDAO.sol';
 
 
 contract LendingManager {
-	uint256 group_number;
-	mapping(uint256 => address) groups;
+	uint group_number;
+	mapping(uint => LendingDAO) groups;
 
-	function createGroup(string memory name) {
+	function createGroup(string memory name) public {
 		LendingDAO new_group = new LendingDAO(name, msg.sender);
 		group_number += 1;
 		groups[group_number] = new_group;
 	}
 
   function getGroupNum() public
-    returns (int)
+    returns (uint)
   {
     return group_number;
   }
 
-  function getGroup(int id) public
-    returns (address)
+  function getGroup(uint id) public
+    returns (LendingDAO)
   {
     return groups[id];
   }
