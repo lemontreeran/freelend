@@ -9,11 +9,22 @@ import Home from './Home';
 import CreateCircle from './CreateCircle';
 import * as hash from 'hash-sdk';
 import { TokenData } from "./token-data";
+import { LENDING_DAO_MANAGER_ABI, LENDING_DAO_MANAGER_ADDRESS } from './config'
+
+const LENDING_DAO_MANAGER_ABI_GETNUMGROUPS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
+  return (el.name == 'getGroupNum')
+});
+console.log(LENDING_DAO_MANAGER_ABI_GETNUMGROUPS);
 
 class App extends Component {
   // componentDidMount() {
   //   this.loadBlockchainData()
   // }
+
+  constructor(props) {
+    super(props)
+    this.state = { account: '' }
+  }
 
   componentDidMount = () => {
     let _this = this;
@@ -51,7 +62,6 @@ class App extends Component {
         console.log('SUCCESS ACCOUNT_INFO cb:::', res);
         console.log('ERROR ACCOUNT_INFO cb:::', err);
       });
-
       console.log('SUCCESS ACCOUNT_INFO:::', resp["currentAccount"]);
       this.setState({ account: resp })
       this.setState({ accountID: resp["currentAccount"] })
@@ -59,6 +69,9 @@ class App extends Component {
       this.setState({ lendingManager })
       let numLendingDAOs = []
       this.setState({ numLendingDAOs })
+
+      let contractTriggerResp = await this.contractCall()
+      console.log('SUCCESS TRIGGER CONTRACT_CALL:::', contractTriggerResp);
 
     } catch (e) {
         console.log("Error in intializing account:::", e);
@@ -78,10 +91,26 @@ class App extends Component {
   //   });
   // }
 
-  constructor(props) {
-    super(props)
-    this.state = { account: '' }
+
+  contractCall() {
+    const data = {
+      contractid: LENDING_DAO_MANAGER_ADDRESS,
+      memo: "Mange lending DAO",
+      params: "[]",
+      paymentserver: "https://mps.hash.ngsystems.com",
+      abi: LENDING_DAO_MANAGER_ABI_GETNUMGROUPS,
+      // amount: 0
+    }
+
+    let resp = hash.triggerSmartContract(data, (err, res) => {
+      console.log('SUCCESS CONTRACT_CALL cb:::', res);
+      console.log('ERROR CONTRACT_CALL cb:::', err);
+    });
+    console.log('SUCCESS CONTRACT_CALL:::', resp);
+    return resp;
   }
+
+
 
   render() {
     return (
