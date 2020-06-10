@@ -13,13 +13,13 @@ contract LendingManager {
 		groups[group_number] = new_group;
 	}
 
-  function getGroupNum() public
+  function getGroupNum() public view
     returns (uint)
   {
     return group_number;
   }
 
-  function getGroup(uint id) public
+  function getGroup(uint id) public view
     returns (LendingDAO)
   {
     return groups[id];

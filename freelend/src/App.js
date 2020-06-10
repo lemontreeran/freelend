@@ -12,7 +12,7 @@ import { TokenData } from "./token-data";
 import { LENDING_DAO_MANAGER_ABI, LENDING_DAO_MANAGER_ADDRESS } from './config'
 
 const LENDING_DAO_MANAGER_ABI_GETNUMGROUPS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
-  return (el.name == 'getGroupNum')
+  return (el.name === 'getGroupNum')
 });
 console.log(LENDING_DAO_MANAGER_ABI_GETNUMGROUPS);
 
