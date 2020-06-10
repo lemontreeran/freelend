@@ -32,7 +32,7 @@ contract LendingDAO{
     return (request.requested, request.totalFulfilled);
   }
 
-  function memberInGroup(address questionable) public view returns (bool) {
+  function memberInDAO(address questionable) public view returns (bool) {
     return bytes(members[questionable].name).length > 0;
   }
 

@@ -4,25 +4,25 @@ import './LendingDAO.sol';
 
 
 contract LendingManager {
-	uint group_number;
-	mapping(uint => LendingDAO) groups;
+	uint DAONumber;
+	mapping(uint => LendingDAO) DAOs;
 
-	function createGroup(string memory name) public {
-		LendingDAO new_group = new LendingDAO(name, msg.sender);
-		group_number += 1;
-		groups[group_number] = new_group;
+  function createDAO(string memory DAOName, string memory ownerName) public {
+    LendingDAO newDAO = new LendingDAO(DAOName, ownerName, msg.sender);
+		DAONumber += 1;
+		DAOs[DAONumber] = newDAO;
 	}
 
-  function getGroupNum() public view
+  function getDAONum() public view
     returns (uint)
   {
-    return group_number;
+    return DAONumber;
   }
 
-  function getGroup(uint id) public view
+  function getDAO(uint id) public view
     returns (LendingDAO)
   {
-    return groups[id];
+    return DAOs[id];
   }
 
 }
