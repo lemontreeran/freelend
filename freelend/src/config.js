@@ -1,5 +1,5 @@
-export const LENDING_DAO_MANAGER_ADDRESS = "0.0.63901"
-export const LENDING_DAO_ADDRESS = "0.0.63888"
+export const LENDING_DAO_MANAGER_ADDRESS = "0.0.66169"
+export const LENDING_DAO_ADDRESS = "0.0.66167"
 
 export const LENDING_DAO_MANAGER_ABI = [
     {
@@ -7,11 +7,16 @@ export const LENDING_DAO_MANAGER_ABI = [
       "inputs": [
         {
           "internalType": "string",
-          "name": "name",
+          "name": "DAOName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ownerName",
           "type": "string"
         }
       ],
-      "name": "createGroup",
+      "name": "createDAO",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -20,7 +25,7 @@ export const LENDING_DAO_MANAGER_ABI = [
     {
       "constant": true,
       "inputs": [],
-      "name": "getGroupNum",
+      "name": "getDAONum",
       "outputs": [
         {
           "internalType": "uint256",
@@ -41,10 +46,10 @@ export const LENDING_DAO_MANAGER_ABI = [
           "type": "uint256"
         }
       ],
-      "name": "getGroup",
+      "name": "getDAO",
       "outputs": [
         {
-          "internalType": "contract LendingGroup",
+          "internalType": "contract LendingDAO",
           "name": "",
           "type": "address"
         }
@@ -53,113 +58,210 @@ export const LENDING_DAO_MANAGER_ABI = [
       "stateMutability": "view",
       "type": "function"
     }
-  ]
+]
 
 export const LENDING_DAO_ABI = [
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amountRequested",
-          "type": "uint256"
-        }
-      ],
-      "name": "newRequest",
-      "type": "event"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "member",
-          "type": "address"
-        }
-      ],
-      "name": "getRequest",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_memberAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        }
-      ],
-      "name": "addMember",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "requestMoney",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "member",
-          "type": "address"
-        }
-      ],
-      "name": "giveMoney",
-      "outputs": [],
-      "payable": true,
-      "stateMutability": "payable",
-      "type": "function"
-    }
-  ]
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_DAOName",
+        "type": "string"
+      },
+      {
+        "name": "_ownerName",
+        "type": "string"
+      },
+      {
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "amountRequested",
+        "type": "uint256"
+      }
+    ],
+    "name": "newRequest",
+    "type": "event"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "member",
+        "type": "address"
+      }
+    ],
+    "name": "getRequest",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "member",
+        "type": "address"
+      }
+    ],
+    "name": "getBalance",
+    "outputs": [
+      {
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "memberAdd",
+        "type": "address"
+      }
+    ],
+    "name": "getMember",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getMemberAddresses",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "questionable",
+        "type": "address"
+      }
+    ],
+    "name": "memberInDAO",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_memberAddress",
+        "type": "address"
+      },
+      {
+        "name": "_name",
+        "type": "string"
+      }
+    ],
+    "name": "addMember",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "requestMoney",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "member",
+        "type": "address"
+      }
+    ],
+    "name": "giveMoney",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]

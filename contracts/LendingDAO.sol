@@ -36,6 +36,22 @@ contract LendingDAO{
     return bytes(members[questionable].name).length > 0;
   }
 
+  function getBalance(address member) public view returns (int256) {
+    return members[member].balance;
+  }
+
+  function getMember(address memberAdd) public view returns (string memory, int) {
+    Member memory member = members[memberAdd];
+
+    return (member.name, member.balance);
+
+  }
+
+  function getMemberAddresses() public view
+    returns (address[] memory) {
+    return memberAddress;
+  }
+
   function addMember (address _memberAddress, string memory _name,
                       string memory phoneNumber, string memory physAddress) public {
     memberAddress.push(_memberAddress);

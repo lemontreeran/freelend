@@ -5,7 +5,7 @@ class Home extends Component {
     return (
         <div>
         <h2>Home</h2>
-        <h3>There are { this.props.numLendingDAOs } election(s)</h3>
+        <h3>There are { this.props.numLendingDAOs } DAO(s)</h3>
         </div>
     );
   }

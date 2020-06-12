@@ -10,11 +10,17 @@ import CreateCircle from './CreateCircle';
 import * as hash from 'hash-sdk';
 import { TokenData } from "./token-data";
 import { LENDING_DAO_MANAGER_ABI, LENDING_DAO_MANAGER_ADDRESS } from './config'
+import ViewProfile from './ViewProfile';
+import ViewDAO from './ViewDAO';
 
-const LENDING_DAO_MANAGER_ABI_GETNUMGROUPS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
-  return (el.name === 'getGroupNum')
+const LENDING_DAO_MANAGER_ABI_GETNUMDAOS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
+  return (el.name === 'getDAONum')
 });
-console.log(LENDING_DAO_MANAGER_ABI_GETNUMGROUPS);
+const LENDING_DAO_MANAGER_ABI_CREATEDAO = LENDING_DAO_MANAGER_ABI.filter(function (el) {
+  return (el.name === 'createDAO')
+});
+
+console.log(LENDING_DAO_MANAGER_ABI_GETNUMDAOS);
 
 class App extends Component {
   // componentDidMount() {
@@ -63,15 +69,36 @@ class App extends Component {
         console.log('ERROR ACCOUNT_INFO cb:::', err);
       });
       console.log('SUCCESS ACCOUNT_INFO:::', resp["currentAccount"]);
-      this.setState({ account: resp })
-      this.setState({ accountID: resp["currentAccount"] })
+      // this.setState({ account: resp })
+      this.setState({ account: resp["currentAccount"] })
       const lendingManager = null
       this.setState({ lendingManager })
-      let numLendingDAOs = []
-      this.setState({ numLendingDAOs })
 
-      let contractTriggerResp = await this.contractCall()
-      console.log('SUCCESS TRIGGER CONTRACT_CALL:::', contractTriggerResp);
+
+      const LENDING_DAO_MANAGER_ABI_GETNUMDAOS_DATA = {
+        contractid: LENDING_DAO_MANAGER_ADDRESS,
+        memo: "Get number of DAOs",
+        params: "[]",
+        paymentserver: "https://mps.hash.ngsystems.com",
+        abi: LENDING_DAO_MANAGER_ABI_GETNUMDAOS,
+        // amount: 0
+      }
+
+      const LENDING_DAO_MANAGER_ABI_CREATEDAO_DATA = {
+        contractid: LENDING_DAO_MANAGER_ADDRESS,
+        memo: "Create DAO",
+        params: "[]",
+        paymentserver: "https://mps.hash.ngsystems.com",
+        abi: LENDING_DAO_MANAGER_ABI_CREATEDAO,
+        // amount: 0
+      }
+
+      await this.lendingManagerGetDAONum(LENDING_DAO_MANAGER_ABI_GETNUMDAOS_DATA)
+
+      this.setState({ lendingManagerGetDAONumData: LENDING_DAO_MANAGER_ABI_GETNUMDAOS_DATA })
+      this.setState({ lendingManagerCreateDAOData: LENDING_DAO_MANAGER_ABI_CREATEDAO_DATA })
+      this.setState({ lendingDAOManagerAddress: LENDING_DAO_MANAGER_ADDRESS })
+      
 
     } catch (e) {
         console.log("Error in intializing account:::", e);
@@ -92,43 +119,52 @@ class App extends Component {
   // }
 
 
-  contractCall() {
-    const data = {
-      contractid: LENDING_DAO_MANAGER_ADDRESS,
-      memo: "Mange lending DAO",
-      params: "[]",
-      paymentserver: "https://mps.hash.ngsystems.com",
-      abi: LENDING_DAO_MANAGER_ABI_GETNUMGROUPS,
-      // amount: 0
-    }
+  lendingManagerGetDAONum(data) {
+    // const data = {
+    //   contractid: LENDING_DAO_MANAGER_ADDRESS,
+    //   memo: "Mange lending DAO",
+    //   params: "[]",
+    //   paymentserver: "https://mps.hash.ngsystems.com",
+    //   abi: LENDING_DAO_MANAGER_ABI_GETNUMDAOS,
+    //   // amount: 0
+    // }
 
     let resp = hash.triggerSmartContract(data, (err, res) => {
-      console.log('SUCCESS CONTRACT_CALL cb:::', res);
+      if (Array.isArray(res.result) && res.result.length === 0) {
+        this.setState({ numLendingDAOs :  0})
+      } else {
+        const numLendingDAOs = res.result.toString()
+        this.setState({ numLendingDAOs :  numLendingDAOs})
+      }
+      console.log('SUCCESS CONTRACT_CALL cb:::', res.result.toString());
+      console.log('numLendingDAOs state value is:::', this.state.numLendingDAOs);
       console.log('ERROR CONTRACT_CALL cb:::', err);
     });
     console.log('SUCCESS CONTRACT_CALL:::', resp);
-    return resp;
   }
-
-
 
   render() {
     return (
         <HashRouter>
         <div>
         <h1>Freelend</h1>
-        <ul className="header">
-        <li><NavLink to="/home">Home</NavLink></li>
-        <li><NavLink to="/create-circle">Create Circle</NavLink></li>
-        </ul>
+        <div className="navBar">
+        <NavLink className="nav" to="/">Home</NavLink>
+        <NavLink className="nav" to="/create-dao">Create DAO</NavLink>
+        <NavLink className="nav" to="/profile">Profile</NavLink>
+        </div>
         <div className="content">
-        <Route exact path="/home" render={props =>
-                                          <Home numLendingDAOs={this.state.numLendingDAOs} {...props} />
-                                         }
+        <Route exact path="/" render={props =>
+                                      <Home numLendingDAOs={this.state.numLendingDAOs} {...props} />
+                                     }
         />
-        <Route exact path="/create-circle" render={props =>
-                                                   <CreateCircle lendingManager={this.state.lendingManager} account={this.state.account} {...props} />
+        <Route exact path="/create-dao" render={props =>
+                                                <CreateCircle lendingDAOManagerAddress={this.state.lendingDAOManagerAddress} account={this.state.account} {...props} />
                                                   }
+        />
+        <Route exact path="/profile" render={props =>
+                                             <ViewProfile lendingDAOManagerAddress={this.state.lendingDAOManagerAddress} account={this.state.account} {...props} />
+                                            }
         />
         </div>
         </div>
