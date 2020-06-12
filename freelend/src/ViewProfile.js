@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { LENDING_DAO_ABI, LENDING_DAO_MANAGER_ABI, LENDING_DAO_ADDRESS } from "./config";
 import ViewDAO from "./ViewDAO"
-// import logo from './part_logo.png';
+import logo from './part_logo.png';
 import * as hash from 'hash-sdk';
 
 const LENDING_DAO_MANAGER_ABI_GETNUMDAOS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
@@ -173,13 +173,13 @@ class Home extends Component {
         <div id="profile">
           <div id="background"></div>
           <div id="mainBoxes">
-            <div id="groupBox">
+            <div id="daoBox">
               <div className="sub-header" style={{width:"8em",marginBottom:"10px",fontSize:"6vmin"}}><b>Lending Groups</b></div>
               <div>
                 {this.state.daos.map(function(dao, idx){
                 return (
                   <div key={idx}>
-                    <NavLink className="group" to={`/dao/${dao._address}`}>{ dao.name }</NavLink>
+                    <NavLink className="dao" to={`/dao/${dao._address}`}>{ dao.name }</NavLink>
                   </div>
                 )})}
               </div>

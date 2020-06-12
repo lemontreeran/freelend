@@ -12,6 +12,7 @@ import { TokenData } from "./token-data";
 import { LENDING_DAO_MANAGER_ABI, LENDING_DAO_MANAGER_ADDRESS } from './config'
 import ViewProfile from './ViewProfile';
 import ViewDAO from './ViewDAO';
+import logo from './full_logo.png';
 
 const LENDING_DAO_MANAGER_ABI_GETNUMDAOS = LENDING_DAO_MANAGER_ABI.filter(function (el) {
   return (el.name === 'getDAONum')
@@ -146,12 +147,18 @@ class App extends Component {
   render() {
     return (
         <HashRouter>
+        <head>
+        <link href="https://fonts.googleapis.com/css?family=Arvo|Roboto&display=swap" rel="stylesheet"/>
+        </head>
         <div>
-        <h1>Freelend</h1>
-        <div className="navBar">
-        <NavLink className="nav" to="/">Home</NavLink>
-        <NavLink className="nav" to="/create-dao">Create DAO</NavLink>
-        <NavLink className="nav" to="/profile">Profile</NavLink>
+          <div className="header" id="Header">
+            <img src={logo} alt="Freelend" className="logo"/>
+            <h1>Freelend</h1>
+            <div className="navBar">
+            <NavLink className="nav" to="/">Home</NavLink>
+            <NavLink className="nav" to="/create-dao">Create DAO</NavLink>
+            <NavLink className="nav" to="/profile">Profile</NavLink>
+          </div>
         </div>
         <div className="content">
         <Route exact path="/" render={props =>

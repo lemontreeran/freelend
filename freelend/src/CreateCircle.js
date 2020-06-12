@@ -47,8 +47,8 @@ class CreateCircle extends Component {
 
   render() {
     return (
-        <div style={{position:"relative"}} id="makeGroup">
-        <div id="groupForm">
+        <div style={{position:"relative"}} id="makeDAO">
+        <div id="daoForm">
         <div className="sub-header"><b>Create a new lending DAO</b></div>
         <form onSubmit={this.handleSubmit}>
         <label>
