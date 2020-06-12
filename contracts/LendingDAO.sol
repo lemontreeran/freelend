@@ -26,6 +26,10 @@ contract LendingDAO{
     owner = _owner;
     members[_owner] = Member(_ownerName, 0);
   }
+  
+  function getDAOName() public view returns (string memory) {
+    return (name);
+  }
 
   function getRequest(address member) public view returns (uint256, uint256) {
     Request memory request = requests[member];

@@ -9,9 +9,9 @@ contract LendingManager {
 
   function createDAO(string memory DAOName, string memory ownerName) public {
     LendingDAO newDAO = new LendingDAO(DAOName, ownerName, msg.sender);
-		DAONumber += 1;
-		DAOs[DAONumber] = newDAO;
-	}
+    DAONumber += 1;
+    DAOs[DAONumber] = newDAO;
+  }
 
   function getDAONum() public view
     returns (uint)
@@ -25,4 +25,9 @@ contract LendingManager {
     return DAOs[id];
   }
 
+  function getDAOName(uint id) public view
+    returns (string memory) 
+  {
+    return DAOs[id].getDAOName();
+  }
 }

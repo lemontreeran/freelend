@@ -16,6 +16,10 @@ const LENDING_DAO_MANAGER_ABI_GETDAO = LENDING_DAO_MANAGER_ABI.filter(function (
   return (el.name === 'getDAO')
 });
 
+const LENDING_DAO_MANAGER_ABI_GETDAONAME = LENDING_DAO_MANAGER_ABI.filter(function (el) {
+  return (el.name === 'getDAOName')
+});
+
 const LENDING_DAO_ABI_MEMBERINDAO = LENDING_DAO_ABI.filter(function (el) {
   return (el.name === 'memberInDAO')
 });
@@ -62,6 +66,24 @@ class Home extends Component {
       })
 
     for (let id = 1; id <= this.state.numLendingDAOs; id++) {
+
+      const LENDING_DAO_MANAGER_ABI_GETDAONAME_DATA = {
+        contractid: this.props.lendingDAOManagerAddress,
+        memo: "Get DAOName",
+        params: `[${id}]`,
+        paymentserver: "https://mps.hash.ngsystems.com",
+        abi: LENDING_DAO_MANAGER_ABI_GETDAONAME,
+        // amount: 0
+      }
+
+      await hash.triggerSmartContract(LENDING_DAO_MANAGER_ABI_GETDAONAME_DATA)
+        .then(res => {
+          // console.log("++++++++++", res.result.toString())
+
+          const daoName = res.result.toString()
+          this.setState({ daoName : daoName })
+        })
+
       const LENDING_DAO_MANAGER_ABI_GETDAO_DATA = {
         contractid: this.props.lendingDAOManagerAddress,
         memo: "Get DAO",
@@ -82,7 +104,7 @@ class Home extends Component {
       console.log("++++dao++++++", this.state.dao)
 
       await this.inDAO(this.state.dao)
-      await this.checkBalance()
+      await this.checkBalance(this.state.daoName)
     }
 
   }
@@ -115,13 +137,11 @@ class Home extends Component {
     return this.state.memberInDAO
   }
 
-  checkBalance = async () => {
+  checkBalance = async (daoName) => {
     const dao = this.state.dao
     console.log("+++++inDAO+++++", this.state.memberInDAO)
     if (this.state.memberInDAO) {
       console.log('SUCCESS GET DAO:::', this.state.dao);
-      const groupName = "test1"
-
       const LENDING_DAO_ABI_GETBALANCE_DATA = {
         contractid: LENDING_DAO_ADDRESS,
         memo: "Get Balance",
@@ -138,7 +158,7 @@ class Home extends Component {
         })
 
       const dao = {};
-      dao["name"] = groupName
+      dao["name"] = daoName
       dao["balance"]= this.state.balance
       const prevDaos = this.state.daos
       this.setState({daos : [...prevDaos, dao]})

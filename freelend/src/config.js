@@ -1,5 +1,5 @@
-export const LENDING_DAO_MANAGER_ADDRESS = "0.0.66169"
-export const LENDING_DAO_ADDRESS = "0.0.66167"
+export const LENDING_DAO_MANAGER_ADDRESS = "0.0.68354"
+export const LENDING_DAO_ADDRESS = "0.0.68352"
 
 export const LENDING_DAO_MANAGER_ABI = [
     {
@@ -52,6 +52,27 @@ export const LENDING_DAO_MANAGER_ABI = [
           "internalType": "contract LendingDAO",
           "name": "",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDAOName",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
         }
       ],
       "payable": false,
